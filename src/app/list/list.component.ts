@@ -27,7 +27,7 @@ export class ListComponent implements OnInit {
   }
 
   remove(book: Book) {
-    this.bookService.remove(book).subscribe(
+    this.bookService.delete(book).subscribe(
       data => console.log(JSON.stringify(data)),
       error => console.error("Error ", error),
       () => this.loadBooks());
@@ -42,7 +42,7 @@ export class ListComponent implements OnInit {
   }
 
   loadBooks() {
-    this.bookService.getBooks().subscribe(
+    this.bookService.getAll().subscribe(
       data => this.books = data,
       error => console.error("Error ", error),
       () => console.log("Books loaded"));
