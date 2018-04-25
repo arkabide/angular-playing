@@ -1,0 +1,52 @@
+<table>
+  <thead>
+    <td style="width:20%">
+      Author
+    </td>
+    <td style="width:20%">
+      Title
+    </td>
+    <td style="width:20%">
+      Pages
+    </td>
+    <td style="width:20%">
+      Category
+    </td>
+    <td style="width:20%">
+    </td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let book of books; let i = index">
+      <td style="width:20%">
+        {{book.author}}
+      </td>
+      <td style="width:20%">
+        {{book.title}}
+      </td>
+      <td style="width:20%">
+        {{book.pages}}
+      </td>
+      <td style="width:20%">
+        {{book.category.name}}
+      </td>
+      <td style="width:20%">
+        <span (click)="remove(book)">Remove</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<br><br>
+<form name="form">
+  <label>Author</label><input type="text" name="text" [(ngModel)]="newBook.author" />
+  <label>Title</label><input type="text" name="title" [(ngModel)]="newBook.title" />
+  <label>Pages</label><input type="number" name="pages" [(ngModel)]="newBook.pages" />
+  <label>Category</label>
+  <select name="category" [(ngModel)]="newBook.category">
+    <option *ngFor="let category of categories" [ngValue]="category" >
+      {{category.name}}
+    </option>
+  </select>
+
+  <input type="button" value="add" (click)="add()" />
+</form>
