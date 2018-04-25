@@ -3,6 +3,7 @@ import { Book } from '../model/book';
 import { Category } from '../model/category';
 import { BookService } from '../services/book.service';
 import { CategoryService } from '../services/category.service';
+import { FacadeService } from '../services/facade.service';
 
 @Component({
   selector: 'app-list',
@@ -14,16 +15,33 @@ export class ListComponent implements OnInit {
   newBook: Book = new Book(Math.floor(Math.random() * 56));
   books: Book[] = [];
   categories: Category[] = [];
+  totalPages: number;
 
   constructor(
-    private bookService: BookService,
-    private categoryService: CategoryService) {
+    private facadeService: FacadeService,
+    private categoryService: CategoryService,
+    private bookService: BookService) {
 
-    this.loadCategories();
-    this.loadBooks();
+    this.facadeService.getBooksAndCategories().subscribe(
+      data => {
+        if (Array.isArray(data) && data[0] instanceof Category) {
+          this.categories = <Category[]>data;
+        } else {
+          this.books = <Book[]>data;
+        }
+      }
+    );
+
   }
 
   ngOnInit() {
+  }
+
+  sumPages() {
+    this.facadeService.sumPages().subscribe(
+      data => this.totalPages = data,
+      error => console.error(error)
+    )
   }
 
   remove(book: Book) {
@@ -49,7 +67,7 @@ export class ListComponent implements OnInit {
   }
 
   loadCategories() {
-    this.categoryService.getCategories().subscribe(
+    this.categoryService.getAll().subscribe(
       data => this.categories = data,
       error => console.error("Error ", error),
       () => console.log("Categories loaded"))
