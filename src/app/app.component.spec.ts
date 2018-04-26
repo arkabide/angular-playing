@@ -1,11 +1,19 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { FormsModule } from '@angular/forms';
+import { BookService } from './services/book.service';
+import { CategoryService } from './services/category.service';
+import { FacadeService } from './services/facade.service';
+import { HttpClientModule } from '@angular/common/http';
+
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         AppComponent
-      ],
+      ], imports: [RouterTestingModule, FormsModule, HttpClientModule],
+      providers: [BookService, CategoryService, FacadeService],
     }).compileComponents();
   }));
   it('should create the app', async(() => {
@@ -22,6 +30,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
+    expect(compiled.querySelector('h1').textContent).toContain('app');
   }));
 });
