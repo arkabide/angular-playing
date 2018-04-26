@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Book } from '../model/book';
 import { Category } from '../model/category';
 import { BookService } from '../services/book.service';
@@ -12,26 +13,23 @@ import { FacadeService } from '../services/facade.service';
 })
 export class ListComponent implements OnInit {
 
-  newBook: Book = new Book(Math.floor(Math.random() * 56));
   books: Book[] = [];
-  categories: Category[] = [];
   totalPages: number;
+  message: string;
 
   constructor(
     private facadeService: FacadeService,
     private categoryService: CategoryService,
-    private bookService: BookService) {
+    private bookService: BookService,
+    private router: Router,
+    private route: ActivatedRoute) {
 
-    this.facadeService.getBooksAndCategories().subscribe(
-      data => {
-        if (Array.isArray(data) && data[0] instanceof Category) {
-          this.categories = <Category[]>data;
-        } else {
-          this.books = <Book[]>data;
-        }
-      }
-    );
+    this.route.params.subscribe(params => {
+      console.log(params);
+      this.message = params.message;
+    });
 
+    this.loadBooks();
   }
 
   ngOnInit() {
@@ -44,6 +42,11 @@ export class ListComponent implements OnInit {
     )
   }
 
+  addForm() {
+    this.router.navigateByUrl('/form');
+  }
+
+
   remove(book: Book) {
     this.bookService.delete(book).subscribe(
       data => console.log(JSON.stringify(data)),
@@ -51,25 +54,10 @@ export class ListComponent implements OnInit {
       () => this.loadBooks());
   }
 
-  add() {
-    this.bookService.add(this.newBook).subscribe(
-      data => console.log(JSON.stringify(data)),
-      error => console.error("Error ", error),
-      () => this.loadBooks());
-    this.newBook = new Book(Math.floor(Math.random() * 56));
-  }
-
   loadBooks() {
     this.bookService.getAll().subscribe(
       data => this.books = data,
       error => console.error("Error ", error),
-      () => console.log("Books loaded"));
-  }
-
-  loadCategories() {
-    this.categoryService.getAll().subscribe(
-      data => this.categories = data,
-      error => console.error("Error ", error),
-      () => console.log("Categories loaded"))
+      () => this.sumPages());
   }
 }

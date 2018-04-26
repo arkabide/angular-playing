@@ -10,25 +10,30 @@ var books= [];
 var categories = [];
 
 function loadCategories(){
-  for (let i = 0; i < 15; i++) {
-    categories.push({
-        id:(i+1),
-        name:"Category " + (i+1),
-        desc:"Desc "+(i+1)
-      });
-  }
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < 15; i++) {
+      categories.push({
+          id:(i+1),
+          name:"Category " + (i+1),
+          desc:"Desc "+(i+1)
+        });
+    }
+  });
 }
 
 function loadBooks(){
-  for (let i = 0; i < 10; i++) {
-    books.push({
-      id:(i+1),
-      author: 'me',
-      title: 'Angular 5',
-      pages: Math.floor(Math.random() * (i+1) * 100),
-      category: categories[Math.floor(Math.random() * categories.length)]
-    });
-  }
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < 10; i++) {
+      books.push({
+        id:(i+1),
+        author: 'me',
+        title: 'Angular 5',
+        pages: Math.floor(Math.random() * (i+1) * 100),
+        category: categories[Math.floor(Math.random() * categories.length)]
+      });
+    }
+   resolve();
+ });
 }
 
 app.get('/', function (req, res) {
@@ -58,5 +63,4 @@ app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
 
-loadCategories();
-loadBooks();
+loadCategories().then(loadBooks());

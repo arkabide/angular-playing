@@ -1,21 +1,5 @@
-<form name="form">
-  <label>Author: </label><input type="text" name="text" [(ngModel)]="newBook.author" />
-  <label>Title: </label><input type="text" name="title" [(ngModel)]="newBook.title" />
-  <label>Pages: </label><input type="number" name="pages" [(ngModel)]="newBook.pages" />
-  <label>Category: </label>
-  <select name="category" [(ngModel)]="newBook.category">
-    <option *ngFor="let category of categories" [ngValue]="category" >
-      {{category.name}}
-    </option>
-  </select>
-
-  <input type="button" value="add" (click)="add()" />
-</form>
-
-<br><br>
-
 <table>
-  <thead>
+  <thead style="background:#dedede">
     <td style="width:20%">
       Author
     </td>
@@ -50,10 +34,20 @@
       </td>
     </tr>
   </tbody>
+  <tfoot style="background:#dedede">
+    <tr>
+      <td colspan="2">
+        Total Pages</td>
+      <td>
+        <span *ngIf="totalPages"> {{totalPages}}</span>
+      </td>
+      <td colspan="2"></td>
+    </tr>
+  </tfoot>
 </table>
 
 <br><br>
 
 <div>
-  <input type="button" value="Total Pages" (click)="sumPages()" /> <span *ngIf="totalPages"> {{totalPages}}</span>
+  <input type="button" value="Add" (click)="addForm()" />
 </div>

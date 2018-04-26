@@ -12,7 +12,7 @@ export abstract class RestService<T> {
   abstract getItemId(item: T): number;
 
   getAll(): Observable<T[]> {
-    return <Observable<T[]>>this.http.get(this.host() + this.resourceBase());
+    return (<Observable<T[]>>this.http.get(this.host() + this.resourceBase()));
   }
 
   add(item: T): Observable<T[]> {
